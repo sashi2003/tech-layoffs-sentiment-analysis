@@ -140,8 +140,16 @@ with col3:
 
 with col4:
     df_news['month'] = df_news['date'].dt.to_period('M').astype(str)
-    sentiment_time = df_news.groupby(['month', 'sentiment_cat']).size().reset_index()
-    sentiment_time.columns = ['month', 'sentiment', 'count']
+    
+    neg_time = df_news[df_news['sentiment_cat']=='negative'].groupby('month').size().reset_index(name='count')
+    pos_time = df_news[df_news['sentiment_cat']=='positive'].groupby('month').size().reset_index(name='count')
+    neu_time = df_news[df_news['sentiment_cat']=='neutral'].groupby('month').size().reset_index(name='count')
+    
+    neg_time['sentiment'] = 'negative'
+    pos_time['sentiment'] = 'positive'
+    neu_time['sentiment'] = 'neutral'
+    
+    sentiment_time = pd.concat([neg_time, pos_time, neu_time], ignore_index=True)
     
     fig5 = px.line(sentiment_time,
                    x='month',
