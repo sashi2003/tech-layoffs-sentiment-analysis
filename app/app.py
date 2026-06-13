@@ -128,20 +128,14 @@ with col3:
 
     sentiment_counts = pd.DataFrame({
         'sentiment': ['negative', 'positive', 'neutral'],
-        'count': [neg_count, pos_count, neu_count]
+        'count': [int(neg_count), int(pos_count), int(neu_count)]
     })
 
     fig4 = px.bar(sentiment_counts,
-            x='sentiment',
-            y='count',
-            title='News Sentiment Distribution',
-            color='sentiment',
-            color_discrete_map={
-                'negative': 'tomato',
-                'neutral': 'gray',
-                'positive': 'steelblue'
-            },
-            color_discrete_sequence=None)
+                  x='sentiment',
+                  y='count',
+                  title='News Sentiment Distribution',
+                  labels={'sentiment': 'Sentiment', 'count': 'Count'})
     st.plotly_chart(fig4, use_container_width=True)
 
 with col4:
