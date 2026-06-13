@@ -122,17 +122,26 @@ st.subheader("News Sentiment Analysis")
 col3, col4 = st.columns(2)
 
 with col3:
-    sentiment_counts = df_news['sentiment_cat'].value_counts().reset_index()
-    sentiment_counts.columns = ['sentiment', 'count']
+    neg_count = (df_news['sentiment_cat'] == 'negative').sum()
+    pos_count = (df_news['sentiment_cat'] == 'positive').sum()
+    neu_count = (df_news['sentiment_cat'] == 'neutral').sum()
+
+    sentiment_counts = pd.DataFrame({
+        'sentiment': ['negative', 'positive', 'neutral'],
+        'count': [neg_count, pos_count, neu_count]
+    })
+
     fig4 = px.bar(sentiment_counts,
-                  x='sentiment', y='count',
-                  title='News Sentiment Distribution',
-                  color='sentiment',
-                  color_discrete_map={
-                      'negative': 'tomato',
-                      'neutral': 'gray',
-                      'positive': 'steelblue'
-                  })
+            x='sentiment',
+            y='count',
+            title='News Sentiment Distribution',
+            color='sentiment',
+            color_discrete_map={
+                'negative': 'tomato',
+                'neutral': 'gray',
+                'positive': 'steelblue'
+            },
+            color_discrete_sequence=None)
     st.plotly_chart(fig4, use_container_width=True)
 
 with col4:
@@ -170,7 +179,7 @@ combined = monthly_layoffs_all.merge(news_monthly, on='month', how='inner')
 
 fig6 = make_subplots(specs=[[{"secondary_y": True}]])
 fig6.add_trace(
-    go.Bar(x=combined['month'], y=combined['total_layoffs'] if 'total_layoffs' in combined.columns else combined['layoff_count'],
+    go.Bar(x=combined['month'], y = combined['layoff_count'],
            name='Total Layoffs', marker_color='tomato', opacity=0.7),
     secondary_y=False
 )
