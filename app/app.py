@@ -140,17 +140,15 @@ with col3:
 
 with col4:
     df_news['month'] = df_news['date'].dt.to_period('M').astype(str)
-    sentiment_time = df_news.groupby(['month', 'sentiment_cat'])['sentiment'].count().reset_index()
+    sentiment_time = df_news.groupby(['month', 'sentiment_cat']).size().reset_index()
     sentiment_time.columns = ['month', 'sentiment', 'count']
+    
     fig5 = px.line(sentiment_time,
-                   x='month', y='count',
+                   x='month',
+                   y='count',
                    color='sentiment',
                    title='Sentiment Trends Over Time',
-                   color_discrete_map={
-                       'negative': 'tomato',
-                       'neutral': 'gray',
-                       'positive': 'steelblue'
-                   })
+                   labels={'count': 'Number of Articles', 'month': 'Month'})
     fig5.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig5, use_container_width=True)
 
