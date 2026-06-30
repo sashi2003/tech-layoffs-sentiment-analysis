@@ -151,13 +151,14 @@ with col4:
     
     sentiment_time = pd.concat([neg_time, pos_time, neu_time], ignore_index=True)
     
-    fig5 = px.line(sentiment_time,
-                   x='month',
-                   y='count',
-                   color='sentiment',
-                   title='Sentiment Trends Over Time',
-                   labels={'count': 'Number of Articles', 'month': 'Month'})
-    fig5.update_layout(xaxis_tickangle=-45)
+    fig5 = go.Figure()
+    fig5.add_trace(go.Scatter(x=neg_time['month'], y=neg_time['count'], 
+                           name='negative', line=dict(color='tomato')))
+    fig5.add_trace(go.Scatter(x=pos_time['month'], y=pos_time['count'], 
+                           name='positive', line=dict(color='steelblue')))
+    fig5.add_trace(go.Scatter(x=neu_time['month'], y=neu_time['count'], 
+                           name='neutral', line=dict(color='gray')))
+    fig5.update_layout(title='Sentiment Trends Over Time', xaxis_tickangle=-45)
     st.plotly_chart(fig5, use_container_width=True)
 
 st.markdown("---")
@@ -202,12 +203,15 @@ monthly_layoffs_all2['month'] = monthly_layoffs_all2['date'].dt.to_period('M').a
 ai_comparison = monthly_layoffs_all2.groupby(
     ['month', 'is_ai_company'])['layoff_count'].sum().reset_index()
 
-fig7 = px.line(ai_comparison,
-               x='month', y='layoff_count',
-               color='is_ai_company',
-               title='AI vs Non-AI Company Layoffs Over Time',
-               labels={'layoff_count': 'Total Laid Off', 'is_ai_company': 'AI Company'})
-fig7.update_layout(xaxis_tickangle=-45)
+ai_true = ai_comparison[ai_comparison['is_ai_company'] == True]
+ai_false = ai_comparison[ai_comparison['is_ai_company'] == False]
+
+fig7 = go.Figure()
+fig7.add_trace(go.Scatter(x=ai_false['month'], y=ai_false['layoff_count'], 
+                           name='Non-AI Company', line=dict(color='steelblue')))
+fig7.add_trace(go.Scatter(x=ai_true['month'], y=ai_true['layoff_count'], 
+                           name='AI Company', line=dict(color='tomato')))
+fig7.update_layout(title='AI vs Non-AI Company Layoffs Over Time', xaxis_tickangle=-45)
 st.plotly_chart(fig7, use_container_width=True)
 
 st.markdown("---")
