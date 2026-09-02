@@ -24,7 +24,7 @@ to examine how the tech industry and media responded to six years of workforce d
 
 **Off-the-shelf sentiment models struggle with business news.** A pretrained RoBERTa sentiment model reached only 44% accuracy against labeled ground truth. It performed well on negative headlines (91/150) but poorly on positive ones (20/119), most often misclassifying them as neutral: a limitation of general-purpose models applied to domain-specific framing.
 
-**Tech employment growth is the strongest correlate.** Year-over-year tech employment change showed the strongest relationship with layoff volume (r = −0.32). Job openings per unemployed worker correlated positively (r = +0.17), suggesting simultaneous hiring and firing — a bifurcated market.
+**Tech employment growth is the strongest correlate.** Year-over-year tech employment change showed the strongest relationship with layoff volume (r = −0.32). Job openings per unemployed worker correlated positively (r = +0.17), suggesting simultaneous hiring and firing: a bifurcated market.
 
 ## Method
 
@@ -45,8 +45,3 @@ Python, pandas, Plotly, HuggingFace Transformers, BERTopic, Streamlit, Docker
 - `data/` — layoff events, news sentiment, labor indicators
 - `app/` — Streamlit dashboard
 - `Dockerfile` — containerized deployment
-
-## Author
-
-Sashi Praneeth Reddy Muthyala  
-M.S. Data Analytics and Computational Social Science, UMass Amherst
